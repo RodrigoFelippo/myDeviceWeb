@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <style>
+           p{ text-align: center;  }
+    </style>
+
+    <p id="demo"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBWa6s4BMLkpQjg2dfDY9bcu4SPaTDvsn4",
+            authDomain: "my-devices-14829.firebaseapp.com",
+            databaseURL: "https://my-devices-14829.firebaseio.com",
+            projectId: "my-devices-14829",
+            storageBucket: "my-devices-14829.appspot.com",
+            messagingSenderId: "465815050427"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script>
+        var ref = firebase.database().ref("devices");
+        var concat = "";
+        var status = "";
+        var use = "";
+
+        ref.on("child_added", function(snapshot, prevChildKey) {
+            var deviceInformation = snapshot.val();
+
+
+            if(deviceInformation.status){
+              status = "Disponível";
+              use = "Ultimo uso: ";
+            }else{
+              status = "Indisponível";
+              use = "Em uso: ";
+            }
+
+
+            concat += deviceInformation.model + " - " 
+                    + status + " - " 
+                    + use + deviceInformation.currentUser + "<br>" + "<br>";
+
+
+            document.getElementById("demo").innerHTML = concat;
+            document.getElementById("demo").style.fontSize = "30px";
+        });
+    </script> 
+    
+  </body>
+</html>
